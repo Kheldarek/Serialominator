@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.psfs.pz.serialominator">
+    <uses-permission android:name="android.permission.INTERNET"/>
+
 
     <application
         android:allowBackup="true"
@@ -27,7 +29,9 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".SearchActivity" />
-        <activity android:name=".Favorites"></activity>
+        <activity android:name=".Favorites" />
+        <activity android:name=".ToDoList" />
+        <activity android:name=".CalendarActivity"></activity>
     </application>
 
 </manifest>

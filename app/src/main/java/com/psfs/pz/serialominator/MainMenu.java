@@ -66,5 +66,17 @@ public class MainMenu extends AppCompatActivity {
         startActivity(goToSearch);
     }
 
+    public void todo_Click(View view)
+    {
+        Intent goToDo = new Intent(this,ToDoList.class);
+        startActivity(goToDo);
+    }
+
+    public void calendar_Click(View view)
+    {
+        Intent goToCalendar = new Intent(this,CalendarActivity.class);
+        startActivity(goToCalendar);
+    }
+
 
 }

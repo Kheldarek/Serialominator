@@ -3,4 +3,8 @@
     <string name="action_settings">Settings</string>
     <string name="menu_strings">Ulubione</string>
     <string name="search_txt">Szukaj</string>
+    <string name="calendar">Kalendarz</string>
+    <string name="toto_desc">Todolist</string>
+    <string name="search_bttn">Szukaj</string>
+    <string name="search_def">Wpisz tytuł...</string>
 </resources>
