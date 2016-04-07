@@ -29,19 +29,12 @@
         android:indeterminate="true"
         android:visibility="gone" />
 
-    <TextView
-        android:layout_width="352dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/responseView"
-        android:layout_weight="0.22" />
-
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="80dp"
         android:id="@+id/searchLst"
         android:layout_gravity="center_vertical"
-        android:layout_weight="1.00" />
+        android:layout_weight="1.00"
+        android:clickable="true" />
 
 </LinearLayout>
