@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,16 +15,23 @@ import android.widget.ToggleButton;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by psend on 01.04.2016.
  */
-public class SearchListAdapter extends ArrayAdapter<SearchRowBean>
+public class FavoritesAdapter extends ArrayAdapter<TvSeries>
 {
     Context context;
     int layoutResourceId;
-    SearchRowBean data[] = null;
+    TvSeries data[] = null;
+    private static final TvSeries[] EMPTY_SERIES_ARRAY = new TvSeries[0];
 
-    public SearchListAdapter(Context context, int layoutResourceId, SearchRowBean[] data) {
+
+    public FavoritesAdapter(Context context, int layoutResourceId, TvSeries[] data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -46,8 +52,8 @@ public class SearchListAdapter extends ArrayAdapter<SearchRowBean>
             holder.imgIcon = (ImageView)row.findViewById(R.id.imgIcon);
             holder.txtTitle = (TextView)row.findViewById(R.id.txtTitle);
             holder.txtYear = (TextView)row.findViewById(R.id.txtYear);
-            holder.btn = (Button) row.findViewById(R.id.addBtn);
-            holder.btn.setOnClickListener(BtnClickListener);
+            holder.delBtn = (Button) row.findViewById(R.id.delBtn);
+            holder.delBtn.setOnClickListener(BtnClickListener);
             row.setTag(holder);
         }
         else
@@ -55,13 +61,13 @@ public class SearchListAdapter extends ArrayAdapter<SearchRowBean>
             holder = (RowBeanHolder)row.getTag();
         }
 
-        SearchRowBean object = data[position];
-        holder.txtTitle.setText(object.Title);
+        TvSeries object = data[position];
+        holder.txtTitle.setText(object.getName());
         Picasso .with(this.context)
-                .load(object.imgUrl)
+                .load(object.getImg())
                 .into((holder.imgIcon));
-        holder.txtYear.setText(object.Year);
-        holder.btn.setTag(position);
+        holder.txtYear.setText(object.getYear());
+        holder.delBtn.setTag(position);
         return row;
     }
 
@@ -70,28 +76,38 @@ public class SearchListAdapter extends ArrayAdapter<SearchRowBean>
         ImageView imgIcon;
         TextView txtTitle;
         TextView txtYear;
-        Button btn;
+        Button delBtn;
     }
+    //Then the function becomes:
+
+
     private View.OnClickListener BtnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             int position = (Integer) v.getTag();
             View parent = v.getRootView();
             Log.d("BTNLST", "pos " + position );
-            ListView tmp = (ListView)parent.findViewById(R.id.searchLst);
-            SearchRowBean tmpRow = (SearchRowBean)tmp.getItemAtPosition(position);
-            Log.d("sth", tmpRow.Title + " ");
+            ListView tmp = (ListView)parent.findViewById(R.id.favList);
+            TvSeries tmpRow = (TvSeries)tmp.getItemAtPosition(position);
+            Log.d("sth", tmpRow.getName() + " ");
             SeriesDB seriesDB = new SeriesDB(parent.getContext());
-            TvSeries add = new TvSeries();
-            add.setImg((tmpRow.imgUrl));
-            add.setYear(tmpRow.Year);
-            add.setName(tmpRow.Title);
-            seriesDB.addSeries(add);
+            TvSeries tmpSeries = seriesDB.getByNameAndYear(tmpRow.getName(),tmpRow.getYear());
+            seriesDB.delSeries(tmpSeries.getId());
+            List<TvSeries> list = new ArrayList<>();
+            Collections.addAll(list, data);
+            list.removeAll(Arrays.asList(data[position]));
+            data = list.toArray(EMPTY_SERIES_ARRAY);
+            for(TvSeries x : data)
+            {
+                Log.d("DATA", x.getName());
+            }
+
+            //notifyDataSetChanged();
+            tmp.setAdapter(new FavoritesAdapter(parent.getContext(), R.layout.favs_row, data));
             seriesDB.close();
 
 
 
         }
     };
-
 }

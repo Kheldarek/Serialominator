@@ -44,7 +44,7 @@ public class SearchActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
+        SeriesDB seriesDB = new SeriesDB(this);
 
         movieTitle = (EditText) findViewById(R.id.searchTxt);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);

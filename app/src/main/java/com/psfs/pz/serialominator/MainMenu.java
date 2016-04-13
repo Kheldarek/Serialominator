@@ -30,6 +30,7 @@ public class MainMenu extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
     }
 
     @Override
