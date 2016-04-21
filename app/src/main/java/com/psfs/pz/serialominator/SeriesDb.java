@@ -11,7 +11,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.LinkedList;
@@ -19,8 +18,7 @@ import java.util.List;
 
 public class SeriesDB extends SQLiteOpenHelper{
 
-    public SeriesDB(Context context) {
-        super(context, "series.db", null, 1);
+    public SeriesDB(Context context) {super(context, "series.db", null, 1);
     }
 
     @Override

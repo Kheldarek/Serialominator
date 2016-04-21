@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -29,6 +30,8 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
 
     }
@@ -57,7 +60,9 @@ public class MainMenu extends AppCompatActivity {
 
     public void favs_Click(View view)
     {
+
         Intent goToFavs = new Intent(this,Favorites.class);
+
         startActivity(goToFavs);
     }
 
@@ -69,6 +74,7 @@ public class MainMenu extends AppCompatActivity {
 
     public void todo_Click(View view)
     {
+
         Intent goToDo = new Intent(this,ToDoList.class);
         startActivity(goToDo);
     }

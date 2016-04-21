@@ -55,6 +55,7 @@ public class FavoritesAdapter extends ArrayAdapter<TvSeries>
             holder.delBtn = (Button) row.findViewById(R.id.delBtn);
             holder.delBtn.setOnClickListener(BtnClickListener);
             row.setTag(holder);
+
         }
         else
         {
@@ -78,7 +79,7 @@ public class FavoritesAdapter extends ArrayAdapter<TvSeries>
         TextView txtYear;
         Button delBtn;
     }
-    //Then the function becomes:
+
 
 
     private View.OnClickListener BtnClickListener = new View.OnClickListener() {

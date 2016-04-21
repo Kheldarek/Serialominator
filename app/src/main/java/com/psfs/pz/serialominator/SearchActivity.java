@@ -1,16 +1,19 @@
 package com.psfs.pz.serialominator;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,7 +52,17 @@ public class SearchActivity extends AppCompatActivity
         movieTitle = (EditText) findViewById(R.id.searchTxt);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         movieList = (ListView) findViewById(R.id.searchLst);
-
+        context = this;
+        movieList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1,int position, long arg3)
+            {
+                //Toast.makeText(SuggestionActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+                Intent x = new Intent(context,Favorites.class);
+                startActivity(x);
+            }
+        });
         Button queryButton = (Button) findViewById(R.id.searchBtt);
         queryButton.setOnClickListener(new View.OnClickListener()
         {
@@ -59,14 +72,26 @@ public class SearchActivity extends AppCompatActivity
                 new RetrieveMoviesTask(movieTitle.getText().toString()).execute();
             }
         });
-        context = this;
+
 
     }
+
 
     private void initSeriesList()
     {
         movieList.setAdapter(new SearchListAdapter(context, R.layout.search_row,
                 response_array));
+        movieList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
+            {
+                Intent x = new Intent(SearchActivity.this,SeriesDetails.class);
+                SearchRowBean tmp = (SearchRowBean) movieList.getItemAtPosition(position);
+                x.putExtra("DATA",tmp.Title + "|" + tmp.Year);
+                startActivityForResult(x,0);
+            }
+        });
     }
 
     class RetrieveMoviesTask extends AsyncTask<Void, Void, String[]>
