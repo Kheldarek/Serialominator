@@ -20,22 +20,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Title"
             android:id="@+id/Title"
             android:gravity="center_horizontal"/>
 
         <Space
-            android:layout_width="20px"
-            android:layout_height="20px"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Year"
             android:id="@+id/Year"
-            android:gravity="right"/>
+            android:gravity="end"/>
     </LinearLayout>
 
     <LinearLayout
@@ -59,21 +57,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="rating"
                 android:id="@+id/rating"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="genre"
                 android:id="@+id/genre"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="runtime"
                 android:id="@+id/runtime"/>
         </LinearLayout>
 
@@ -88,7 +83,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="description"
             android:id="@+id/plot"/>
     </ScrollView>
 

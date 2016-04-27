@@ -103,7 +103,7 @@ public class FavoritesAdapter extends ArrayAdapter<TvSeries>
                 Log.d("DATA", x.getName());
             }
 
-            //notifyDataSetChanged();
+
             tmp.setAdapter(new FavoritesAdapter(parent.getContext(), R.layout.favs_row, data));
             seriesDB.close();
 

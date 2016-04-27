@@ -32,7 +32,19 @@ import static java.lang.Math.ceil;
 public class SearchActivity extends AppCompatActivity
 {
 
-    static final String API_URL = "http://www.omdbapi.com/?";
+    static final String API_URL = "http://www.omdbapi.com/?s=%s&plot=short&r=json&type=series&page=%s";
+    static final String SPACE = " ";
+    static final String PLUS = "+";
+    static final String SPLIT = "|";
+    static final String DATA = "DATA";
+    static final String POSTER_KEY = "Poster";
+    static final String RESULTS_KEY = "totalResults";
+    static final String TITLE_KEY = "Title";
+    static final String YEAR_KEY = "Year";
+    static final String SEARCH_KEY = "Search";
+    static final String NO_CONNECTION = "No internet connection";
+    static final String SHOW_NOT_FOUND = "TV Show not found";
+    static final String OMDB_ERROR_NF = "{\"Response\":\"False\",\"Error\":\"Movie not found!\"}";
     EditText movieTitle;
     ProgressBar progressBar;
     ListView movieList;
@@ -40,7 +52,7 @@ public class SearchActivity extends AppCompatActivity
     Context context;
     int pageCount;
     int resultsCount;
-    int resultsOffset;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -88,7 +100,7 @@ public class SearchActivity extends AppCompatActivity
             {
                 Intent x = new Intent(SearchActivity.this,SeriesDetails.class);
                 SearchRowBean tmp = (SearchRowBean) movieList.getItemAtPosition(position);
-                x.putExtra("DATA",tmp.Title + "|" + tmp.Year);
+                x.putExtra(DATA,tmp.Title + SPLIT + tmp.Year);
                 startActivityForResult(x,0);
             }
         });
@@ -118,11 +130,19 @@ public class SearchActivity extends AppCompatActivity
             int currentPage = 1;
             try
             {
-                title = title.replace(" ", "+");
+                if(title.charAt(title.length()-1) ==SPACE.charAt(0))
+                {
+                    title = title.substring(0,title.length()-1);
+                }
+                Log.i("TITLE",title);
+                title = title.replace(SPACE, PLUS);
+
                 do
                 {
-                    URL url = new URL(API_URL + "s=" + title + "&plot=short&r=json&type=series&page=" + currentPage);
+                    URL url = new URL(String.format(API_URL, title, currentPage));
+                    Log.i("URL", url.toString());
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setConnectTimeout(2000);
                     try
                     {
                         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
@@ -137,10 +157,16 @@ public class SearchActivity extends AppCompatActivity
                         if (currentPage ==1)
                         {
                             JSONObject object = (JSONObject) new JSONTokener(tmpPage).nextValue();
-                            resultsCount = object.getInt("totalResults");
+
+                            if(tmpPage.contains(OMDB_ERROR_NF))
+                            {
+                                tmpResp[0]=tmpPage;
+                                urlConnection.disconnect();
+                                break;
+                            }
+                            resultsCount = object.getInt(RESULTS_KEY);
                             if(resultsCount>50) resultsCount = 50;
                             pageCount = (int)ceil((resultsCount / 10.0));
-                            //resultsOffset = pageCount*10 - resultsCount;
                             tmpResp = new String[pageCount];
                             Log.i("PAGE_COUNT", pageCount + " ");
                         }
@@ -163,11 +189,19 @@ public class SearchActivity extends AppCompatActivity
         protected void onPostExecute(String[] responseTab)
         {
             int seriesCount = 0;
-            if (responseTab[0] == null)
-            {
-                responseTab[0] = "THERE WAS AN ERROR";
-            }
             progressBar.setVisibility(View.GONE);
+            if (responseTab == null)
+            {
+
+                Toast.makeText(context,NO_CONNECTION, Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (responseTab[0].contains(OMDB_ERROR_NF))
+            {
+                Toast.makeText(context,SHOW_NOT_FOUND, Toast.LENGTH_LONG).show();
+                return;
+            }
+
             Log.i("INFO", responseTab[0]);
             String response;
             for(int j=0; j<pageCount; j++)
@@ -176,17 +210,16 @@ public class SearchActivity extends AppCompatActivity
                 try
                 {   Log.i("RESP",response);
                     JSONObject object = (JSONObject) new JSONTokener(response).nextValue();
-                    JSONArray search = object.getJSONArray("Search");
+                    JSONArray search = object.getJSONArray(SEARCH_KEY);
                     Log.i("PAGE_COUNT","page =" + j);
                     Log.i("PAGE_CONTENT",search.toString());
-                    // int movieCount = object.getInt("totalResults");*/
                     if(j==0) response_array = new SearchRowBean[resultsCount];
                     for (int i = 0; i < search.length(); i++)
                     {
                         JSONObject tmp = search.getJSONObject(i);
 
                         response_array[seriesCount] = new SearchRowBean(
-                                tmp.getString("Poster"), tmp.getString("Title"), tmp.getString("Year")
+                                tmp.getString(POSTER_KEY), tmp.getString(TITLE_KEY), tmp.getString(YEAR_KEY)
                         );
                         Log.i("resp_array",response_array[seriesCount].Title + "" + response_array[seriesCount].Year);
                         seriesCount++;

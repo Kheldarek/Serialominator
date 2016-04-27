@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -32,12 +33,19 @@ public class SeriesDetails extends AppCompatActivity
     ImageView poster;
     TextView title;
     TextView yearfield;
-    static final String API_URL = "http://www.omdbapi.com/?";
-
+    static final String API_URL = "http://www.omdbapi.com/?t=%s&y=%s&plot=long&r=json";
+    static final String DATA = "DATA";
+    static final String SPLIT = "[|]";
+    static final String PLOT_KEY = "Plot";
+    static final String GENRE_KEY = "Genre";
+    static final String RUNTIME_KEY = "Runtime";
+    static final String POSTER_KEY = "Poster";
+    static final String RATING_KEY = "imdbRating";
+    static final String NO_CONNECTION = "No internet connection";
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
+                super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_series_details);
         plot = (TextView) findViewById(R.id.plot);
         rating = (TextView) findViewById(R.id.rating);
@@ -46,18 +54,14 @@ public class SeriesDetails extends AppCompatActivity
         poster = (ImageView) findViewById(R.id.poster);
         title = (TextView) findViewById(R.id.Title);
         yearfield = (TextView) findViewById(R.id.Year);
-        String data = getIntent().getExtras().getString("DATA");
+        String data = getIntent().getExtras().getString(DATA);
         Log.i("DATA", data);
-        String parts[] = data.split("[|]");
+        String parts[] = data.split(SPLIT);
         String name = parts[0];
         String year = parts[1];
         title.setText(name);
         yearfield.setText(year);
         Log.i("PARTS", name + year);
-        if (Character.compare(year.charAt(year.length() - 1), '-') == 0)
-        {
-            year = year.substring(0, year.length() - 2);
-        }
         new RetrieveSeries(name,year).execute();
 
     }
@@ -90,7 +94,8 @@ public class SeriesDetails extends AppCompatActivity
             {
                 title = title.replace(" ", "+");
 
-                URL url = new URL(API_URL + "t=" + title + "&y=" + year + "&plot=long&r=json");
+                URL url = new URL(String.format(API_URL,title,year));
+                Log.i("URL", url.toString());
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 try
                 {
@@ -122,7 +127,8 @@ public class SeriesDetails extends AppCompatActivity
 
             if (response == null)
             {
-                response = "THERE WAS AN ERROR";
+                Toast.makeText(getApplicationContext(),NO_CONNECTION,Toast.LENGTH_LONG).show();
+                return;
             }
 
             Log.i("INFO", response);
@@ -132,13 +138,13 @@ public class SeriesDetails extends AppCompatActivity
             {
                 Log.i("RESP", response);
                 JSONObject object = (JSONObject) new JSONTokener(response).nextValue();
-                plot.setText(object.getString("Plot"));
-                genre.setText(object.getString("Genre"));
+                plot.setText(object.getString(PLOT_KEY));
+                genre.setText(object.getString(GENRE_KEY));
                 Picasso.with(getBaseContext())
-                        .load(object.getString("Poster"))
+                        .load(object.getString(POSTER_KEY))
                         .into(poster);
-                rating.setText(object.getString("imdbRating"));
-                runtime.setText(object.getString("Runtime"));
+                rating.setText(object.getString(RATING_KEY));
+                runtime.setText(object.getString(RUNTIME_KEY));
 
             } catch (JSONException e)
             {

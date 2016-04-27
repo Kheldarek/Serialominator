@@ -19,6 +19,8 @@ public class Favorites extends AppCompatActivity {
     Context context;
     TvSeries[] db_array;
     SeriesDB seriesDB;
+    static final String DATA = "DATA";
+    static final String SPLIT = "|";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +52,7 @@ public class Favorites extends AppCompatActivity {
             {
                 Intent x = new Intent(Favorites.this,SeriesDetails.class);
                 TvSeries tmp = (TvSeries)movieList.getItemAtPosition(position);
-                x.putExtra("DATA",tmp.getName() + "|" + tmp.getYear());
+                x.putExtra(DATA,tmp.getName() + SPLIT + tmp.getYear());
                 startActivityForResult(x,0);
             }
         });
