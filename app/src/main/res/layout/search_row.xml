@@ -10,7 +10,7 @@
             android:layout_height="60dp" />
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:orientation="vertical">
             <TextView
@@ -18,20 +18,24 @@
                 android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"/>
+                android:paddingTop="5dp"
+                android:textStyle="bold"
+                android:textColor="@color/abc_input_method_navigation_guard"/>
 
             <TextView
                 android:id="@+id/txtYear"
                 android:layout_marginLeft="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"/>
+                android:paddingTop="5dp"
+                android:textStyle="italic"
+                android:textColor="@color/abc_input_method_navigation_guard"/>
         </LinearLayout>
 
     <Button
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:gravity="right"
+        android:gravity="end"
         android:id="@+id/addBtn"
         android:text="ADD"/>
 

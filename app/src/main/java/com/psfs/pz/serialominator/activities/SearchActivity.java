@@ -1,4 +1,4 @@
-package com.psfs.pz.serialominator;
+package com.psfs.pz.serialominator.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +12,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.psfs.pz.serialominator.R;
+import com.psfs.pz.serialominator.listAdapters.SearchRowBean;
+import com.psfs.pz.serialominator.database.SeriesDB;
+import com.psfs.pz.serialominator.listAdapters.SearchListAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,7 +28,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 
 import static java.lang.Math.ceil;
@@ -45,6 +48,7 @@ public class SearchActivity extends AppCompatActivity
     static final String NO_CONNECTION = "No internet connection";
     static final String SHOW_NOT_FOUND = "TV Show not found";
     static final String OMDB_ERROR_NF = "{\"Response\":\"False\",\"Error\":\"Movie not found!\"}";
+
     EditText movieTitle;
     ProgressBar progressBar;
     ListView movieList;
@@ -81,7 +85,7 @@ public class SearchActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                new RetrieveMoviesTask(movieTitle.getText().toString()).execute();
+                new RetrieveSeriesTask(movieTitle.getText().toString()).execute();
             }
         });
 
@@ -106,13 +110,13 @@ public class SearchActivity extends AppCompatActivity
         });
     }
 
-    class RetrieveMoviesTask extends AsyncTask<Void, Void, String[]>
+    class RetrieveSeriesTask extends AsyncTask<Void, Void, String[]>
     {
 
         public String title;
         private Exception exception;
 
-        public RetrieveMoviesTask(String param)
+        public RetrieveSeriesTask(String param)
         {
             title = param;
         }

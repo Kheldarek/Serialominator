@@ -1,4 +1,4 @@
-package com.psfs.pz.serialominator;
+package com.psfs.pz.serialominator.activities;
 
 import android.media.Image;
 import android.os.AsyncTask;
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.psfs.pz.serialominator.R;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;

@@ -1,16 +1,17 @@
-package com.psfs.pz.serialominator;
+package com.psfs.pz.serialominator.activities;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.Toast;
+
+import com.psfs.pz.serialominator.R;
+import com.psfs.pz.serialominator.database.SeriesDB;
+import com.psfs.pz.serialominator.database.TvSeries;
+import com.psfs.pz.serialominator.listAdapters.FavoritesAdapter;
 
 import java.util.List;
 

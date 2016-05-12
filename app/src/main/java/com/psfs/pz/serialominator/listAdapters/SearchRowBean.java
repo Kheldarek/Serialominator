@@ -1,4 +1,4 @@
-package com.psfs.pz.serialominator;
+package com.psfs.pz.serialominator.listAdapters;
 
 /**
  * Created by psend on 01.04.2016.

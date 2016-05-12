@@ -1,4 +1,4 @@
-package com.psfs.pz.serialominator;
+package com.psfs.pz.serialominator.listAdapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,27 +11,23 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
+import com.psfs.pz.serialominator.APIhandlers.APIHandler;
+import com.psfs.pz.serialominator.R;
+import com.psfs.pz.serialominator.database.SeriesDB;
+import com.psfs.pz.serialominator.database.TvSeries;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by psend on 01.04.2016.
  */
-public class FavoritesAdapter extends ArrayAdapter<TvSeries>
+public class SearchListAdapter extends ArrayAdapter<SearchRowBean>
 {
     Context context;
     int layoutResourceId;
-    TvSeries data[] = null;
-    private static final TvSeries[] EMPTY_SERIES_ARRAY = new TvSeries[0];
+    SearchRowBean data[] = null;
 
-
-    public FavoritesAdapter(Context context, int layoutResourceId, TvSeries[] data) {
+    public SearchListAdapter(Context context, int layoutResourceId, SearchRowBean[] data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -52,23 +48,22 @@ public class FavoritesAdapter extends ArrayAdapter<TvSeries>
             holder.imgIcon = (ImageView)row.findViewById(R.id.imgIcon);
             holder.txtTitle = (TextView)row.findViewById(R.id.txtTitle);
             holder.txtYear = (TextView)row.findViewById(R.id.txtYear);
-            holder.delBtn = (Button) row.findViewById(R.id.delBtn);
-            holder.delBtn.setOnClickListener(BtnClickListener);
+            holder.btn = (Button) row.findViewById(R.id.addBtn);
+            holder.btn.setOnClickListener(BtnClickListener);
             row.setTag(holder);
-
         }
         else
         {
             holder = (RowBeanHolder)row.getTag();
         }
 
-        TvSeries object = data[position];
-        holder.txtTitle.setText(object.getName());
+        SearchRowBean object = data[position];
+        holder.txtTitle.setText(object.Title);
         Picasso .with(this.context)
-                .load(object.getImg())
+                .load(object.imgUrl)
                 .into((holder.imgIcon));
-        holder.txtYear.setText(object.getYear());
-        holder.delBtn.setTag(position);
+        holder.txtYear.setText(object.Year);
+        holder.btn.setTag(position);
         return row;
     }
 
@@ -77,38 +72,30 @@ public class FavoritesAdapter extends ArrayAdapter<TvSeries>
         ImageView imgIcon;
         TextView txtTitle;
         TextView txtYear;
-        Button delBtn;
+        Button btn;
     }
-
-
-
     private View.OnClickListener BtnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             int position = (Integer) v.getTag();
             View parent = v.getRootView();
             Log.d("BTNLST", "pos " + position );
-            ListView tmp = (ListView)parent.findViewById(R.id.favList);
-            TvSeries tmpRow = (TvSeries)tmp.getItemAtPosition(position);
-            Log.d("sth", tmpRow.getName() + " ");
+            ListView tmp = (ListView)parent.findViewById(R.id.searchLst);
+            SearchRowBean tmpRow = (SearchRowBean)tmp.getItemAtPosition(position);
+            Log.d("sth", tmpRow.Title + " ");
             SeriesDB seriesDB = new SeriesDB(parent.getContext());
-            TvSeries tmpSeries = seriesDB.getByNameAndYear(tmpRow.getName(),tmpRow.getYear());
-            seriesDB.delSeries(tmpSeries.getId());
-            List<TvSeries> list = new ArrayList<>();
-            Collections.addAll(list, data);
-            list.removeAll(Arrays.asList(data[position]));
-            data = list.toArray(EMPTY_SERIES_ARRAY);
-            for(TvSeries x : data)
-            {
-                Log.d("DATA", x.getName());
-            }
-
-
-            tmp.setAdapter(new FavoritesAdapter(parent.getContext(), R.layout.favs_row, data));
+            TvSeries add = new TvSeries();
+            add.setImg((tmpRow.imgUrl));
+            add.setYear(tmpRow.Year);
+            add.setName(tmpRow.Title);
+            seriesDB.addSeries(add);
+            int seriesID = seriesDB.getByNameAndYear(tmpRow.Title,tmpRow.Year).getId();
             seriesDB.close();
+            APIHandler.LoadEpisodesToDB(tmpRow.Title,seriesID,parent.getContext());
 
 
 
         }
     };
+
 }

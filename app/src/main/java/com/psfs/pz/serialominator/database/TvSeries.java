@@ -1,4 +1,4 @@
-package com.psfs.pz.serialominator;
+package com.psfs.pz.serialominator.database;
 
 /**
  * Created by psend on 13.04.2016.

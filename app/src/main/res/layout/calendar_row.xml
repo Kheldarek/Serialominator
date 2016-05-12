@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/imgIcon"
         android:layout_width="60dp"
-        android:layout_height="60dp" />
+        android:layout_height="90dp" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -19,8 +19,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
-            android:textStyle="bold"
-            android:textColor="@color/abc_input_method_navigation_guard"/>
+            android:textColor="@color/abc_input_method_navigation_guard"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/txtEpTitle"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:textStyle="italic"/>
 
         <TextView
             android:id="@+id/txtYear"
@@ -28,15 +36,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
-            android:textStyle="italic"
+            android:textStyle="bold"
             android:textColor="@color/abc_input_method_navigation_guard"/>
     </LinearLayout>
-
-    <Button
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:gravity="right"
-        android:id="@+id/delBtn"
-        android:text="DEL"/>
 
 </LinearLayout>
