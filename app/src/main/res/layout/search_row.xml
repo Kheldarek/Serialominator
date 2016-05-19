@@ -1,13 +1,20 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+
+
+    >
+            <LinearLayout
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:orientation="horizontal"
               android:descendantFocusability="blocksDescendants"
+
     >
          <ImageView
             android:id="@+id/imgIcon"
             android:layout_width="60dp"
-            android:layout_height="60dp" />
+            android:layout_height="80dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -31,12 +38,15 @@
                 android:textStyle="italic"
                 android:textColor="@color/abc_input_method_navigation_guard"/>
         </LinearLayout>
-
+            </LinearLayout>
     <Button
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:gravity="end"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:id="@+id/addBtn"
         android:text="ADD"/>
 
-</LinearLayout>
+
+</RelativeLayout>

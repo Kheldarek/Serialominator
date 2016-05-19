@@ -83,15 +83,9 @@ public class SearchListAdapter extends ArrayAdapter<SearchRowBean>
             ListView tmp = (ListView)parent.findViewById(R.id.searchLst);
             SearchRowBean tmpRow = (SearchRowBean)tmp.getItemAtPosition(position);
             Log.d("sth", tmpRow.Title + " ");
-            SeriesDB seriesDB = new SeriesDB(parent.getContext());
-            TvSeries add = new TvSeries();
-            add.setImg((tmpRow.imgUrl));
-            add.setYear(tmpRow.Year);
-            add.setName(tmpRow.Title);
-            seriesDB.addSeries(add);
-            int seriesID = seriesDB.getByNameAndYear(tmpRow.Title,tmpRow.Year).getId();
-            seriesDB.close();
-            APIHandler.LoadEpisodesToDB(tmpRow.Title,seriesID,parent.getContext());
+            APIHandler.LoadSeriesToDB(tmpRow.Title,tmpRow.Year,parent.getContext());
+
+
 
 
 

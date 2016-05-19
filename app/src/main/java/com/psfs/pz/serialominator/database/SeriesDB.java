@@ -22,7 +22,7 @@ public class SeriesDB extends SQLiteOpenHelper
 {
     static final String CREATE_SERIES_TABLE = "create table TvSeries(" +
             "id integer primary key autoincrement," + "imdbID text," + "name text," + "year text," + "img text," + "plot text," +
-            "rating text," + "seasons text" + ");";
+            "genre text," + "runtime text,"+ "rating text)";
     static final String CREATE_EPISODES_TABLE = "create table Episodes(" + "id integer primary key autoincrement," + "title text," +
             "seriesID text," + "episodeID text," + "episodeNumber int," + "watched integer," + "season int," + "released int" + ");";
 
@@ -44,14 +44,32 @@ public class SeriesDB extends SQLiteOpenHelper
     {
     }
 
-
+    public void updateEpisode(Episode episode)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("title", episode.getTitle());
+        values.put("seriesID", episode.getSeriesID());
+        values.put("episodeID",episode.getEpisodeID());
+        values.put("episodeNumber", episode.getEpisodeNumber());
+        values.put("watched", episode.getWatched());
+        values.put("season", episode.getSeason());
+        values.put("released", episode.getReleased());
+        String args[] = {episode.getId() + ""};
+        db.update("Episodes", values, "id=?", args);
+    }
     public void addSeries(TvSeries tvSeries)
     {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", tvSeries.getName());
+        values.put("imdbID",tvSeries.getIMDBid());
         values.put("year", tvSeries.getYear());
         values.put("img", tvSeries.getImg());
+        values.put("plot", tvSeries.getPlot());
+        values.put("rating",tvSeries.getRating());
+        values.put("genre",tvSeries.getGenre());
+        values.put("runtime", tvSeries.getRuntime());
         db.insertOrThrow("TvSeries", null, values);
     }
 
@@ -90,6 +108,30 @@ public class SeriesDB extends SQLiteOpenHelper
         return results;
     }
 
+    public List<Episode> getShowUnwatchedEpisodes(String title, String year)
+    {
+        List<Episode> results = new ArrayList<>();
+        TvSeries tvseries= getByNameAndYear(title,year);
+        String[] columns = {"title", "seriesID", "released", "season","episodeNumber","id","watched","episodeID"};
+        SQLiteDatabase db = getReadableDatabase();
+        String args[] = { tvseries.getId()+"","0"};
+        Cursor cursor = db.query("Episodes", columns, "seriesID=? and watched=?", args, null, null, null,null);
+        while (cursor.moveToNext())
+        {
+            Episode episode = new Episode();
+            episode.setTitle(cursor.getString(0));
+            episode.setSeriesID(cursor.getInt(1));
+            episode.setReleased(cursor.getLong(2));
+            episode.setSeason(cursor.getInt(3));
+            episode.setEpisodeNumber(cursor.getInt(4));
+            episode.setId(cursor.getInt(5));
+            episode.setWatched(cursor.getInt(6));
+            episode.setEpisodeID(cursor.getString(7));
+            results.add(episode);
+        }
+
+        return results;
+    }
     public void delSeries(int id)
     {
         SQLiteDatabase db = getWritableDatabase();
