@@ -53,6 +53,8 @@ public class SearchListAdapter extends ArrayAdapter<SearchRowBean>
             holder.txtYear = (TextView)row.findViewById(R.id.txtYear);
             holder.btn = (ImageButton) row.findViewById(R.id.addBtn);
             holder.btn.setOnClickListener(BtnClickListener);
+
+
             row.setTag(holder);
         }
         else
@@ -62,17 +64,24 @@ public class SearchListAdapter extends ArrayAdapter<SearchRowBean>
 
         SearchRowBean object = data[position];
         holder.txtTitle.setText(object.Title);
-        SeriesDB db = new SeriesDB(context);
-        TvSeries tvSeries = db.getByNameAndYear(object.Title,object.Year);
-        if(tvSeries != null)
-        {
-            holder.btn.setImageResource(R.drawable.fav_checked);
-        }
         Picasso .with(this.context)
                 .load(object.imgUrl)
                 .into((holder.imgIcon));
         holder.txtYear.setText(object.Year);
         holder.btn.setTag(position);
+
+        SeriesDB db = new SeriesDB(context);
+        TvSeries tvSeries = db.getByNameAndYear(object.Title,object.Year);
+        db.close();
+        if(tvSeries != null)
+        {
+            holder.btn.setImageResource(R.drawable.fav_checked);
+        }
+        else
+        {
+            holder.btn.setImageResource(R.drawable.fav_unchecked);
+        }
+
         return row;
     }
 

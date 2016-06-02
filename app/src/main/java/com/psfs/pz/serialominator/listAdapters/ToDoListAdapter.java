@@ -34,7 +34,7 @@ public class ToDoListAdapter extends BaseExpandableListAdapter
 {
     Context context;
     public List<TvSeries> groups;
-   public HashMap<TvSeries, List<Episode>> children;
+    public HashMap<TvSeries, List<Episode>> children;
 
 
     public ToDoListAdapter(Context context, List<TvSeries> series, HashMap<TvSeries, List<Episode>> episodes)
@@ -160,7 +160,7 @@ public class ToDoListAdapter extends BaseExpandableListAdapter
         SimpleDateFormat dateformat = new SimpleDateFormat("dd-MM-yyyy");
         holder.txtDate.setText(String.format("Aired:%s", dateformat.format(tmpDt)));
         row.setMinimumHeight(90);
-        holder.watched.setTag(new Position(groupPosition,childPosition));
+        holder.watched.setTag(new Position(groupPosition, childPosition));
 
         return row;
     }
@@ -196,7 +196,7 @@ public class ToDoListAdapter extends BaseExpandableListAdapter
 
         public Position(int a, int b)
         {
-            groupPosition =a;
+            groupPosition = a;
             childPosition = b;
         }
     }
@@ -211,19 +211,24 @@ public class ToDoListAdapter extends BaseExpandableListAdapter
             View parent = v.getRootView();
             Log.d("BTNLST", "pos " + position);
             ExpandableListView tmp = (ExpandableListView) parent.findViewById(R.id.ToDoExList);
-            Episode toMark = (Episode)tmp.getExpandableListAdapter().getChild(position.groupPosition,position.childPosition);
+            Episode toMark = (Episode) tmp.getExpandableListAdapter().getChild(position.groupPosition, position.childPosition);
             toMark.setWatched(1);
             Log.i("WTH", toMark.getWatched() + "");
             SeriesDB seriesDB = new SeriesDB(parent.getContext());
             seriesDB.updateEpisode(toMark);
             seriesDB.close();
-            TvSeries key  = (TvSeries) tmp.getExpandableListAdapter().getGroup(position.groupPosition);
-            List<Episode> deleting= children.get(key);
+            TvSeries key = (TvSeries) tmp.getExpandableListAdapter().getGroup(position.groupPosition);
+            List<Episode> deleting = children.get(key);
             deleting.remove(toMark);
             children.remove(key);
-            children.put(key,deleting);
-            tmp.setAdapter(new ToDoListAdapter(parent.getContext(),groups,children));
+            children.put(key, deleting);
+            int index = tmp.getFirstVisiblePosition();
+            View x = tmp.getChildAt(0);
+            int top = (x == null) ? 0 : (x.getTop() - tmp.getPaddingTop());
+            tmp.setAdapter(new ToDoListAdapter(parent.getContext(), groups, children));
             tmp.expandGroup(position.groupPosition);
+            tmp.setSelectionFromTop(index, top);
+
 
         }
     };
