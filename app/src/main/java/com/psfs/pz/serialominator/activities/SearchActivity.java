@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -79,7 +80,7 @@ public class SearchActivity extends AppCompatActivity
                 startActivity(x);
             }
         });
-        Button queryButton = (Button) findViewById(R.id.searchBtt);
+        ImageButton queryButton = (ImageButton) findViewById(R.id.searchBtt);
         queryButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -114,7 +115,6 @@ public class SearchActivity extends AppCompatActivity
     {
 
         public String title;
-        private Exception exception;
 
         public RetrieveSeriesTask(String param)
         {

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -115,10 +116,10 @@ public class ToDoListAdapter extends BaseExpandableListAdapter
         Picasso.with(this.context)
                 .load(tvSeries.getImg())
                 .into((holder.imgIcon));
-        holder.txtTitle.setText(tvSeries.getName() + "( " + tvSeries.getYear() + " )");
+        holder.txtTitle.setText(String.format("%s( %s )", tvSeries.getName(), tvSeries.getYear()));
         SeriesDB db = new SeriesDB(context);
         List<Episode> tmpEpList = db.getShowUnwatchedEpisodes(tvSeries.getName(), tvSeries.getYear());
-        holder.counter.setText(tmpEpList.size() + " unwatched");
+        holder.counter.setText(String.format("%d unwatched", tmpEpList.size()));
         db.close();
 
 
@@ -144,7 +145,7 @@ public class ToDoListAdapter extends BaseExpandableListAdapter
             holder = new ChildrenHolder();
             holder.txtTitle = (TextView) row.findViewById(R.id.txtTitle);
             holder.txtDate = (TextView) row.findViewById(R.id.txtDate);
-            holder.watched = (Button) row.findViewById(R.id.markWatched);
+            holder.watched = (ImageButton) row.findViewById(R.id.markWatched);
             holder.watched.setOnClickListener(BtnClickListener);
             row.setTag(holder);
 
@@ -154,10 +155,10 @@ public class ToDoListAdapter extends BaseExpandableListAdapter
         }
 
         Episode object = (Episode) getChild(groupPosition, childPosition);
-        holder.txtTitle.setText("(" + object.getSeason() + "-" + object.getEpisodeNumber() + ")" + object.getTitle());
+        holder.txtTitle.setText(String.format("(%d-%d)%s", object.getSeason(), object.getEpisodeNumber(), object.getTitle()));
         Date tmpDt = new Date(object.getReleased());
         SimpleDateFormat dateformat = new SimpleDateFormat("dd-MM-yyyy");
-        holder.txtDate.setText("Aired:" + dateformat.format(tmpDt));
+        holder.txtDate.setText(String.format("Aired:%s", dateformat.format(tmpDt)));
         row.setMinimumHeight(90);
         holder.watched.setTag(new Position(groupPosition,childPosition));
 
@@ -176,7 +177,7 @@ public class ToDoListAdapter extends BaseExpandableListAdapter
     {
         TextView txtTitle;
         TextView txtDate;
-        Button watched;
+        ImageButton watched;
 
     }
 

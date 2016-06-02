@@ -12,66 +12,68 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main_menu"
     tools:context=".activities.MainMenu"
-    android:background="#2e6895">
+    android:background="#6699ff">
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/favs"
-        android:src="@drawable/ulubione"
+        android:src="@drawable/fav_menu"
         android:scaleType="center"
         android:longClickable="true"
         android:background="#000000"
-        android:layout_marginTop="61dp"
         android:layout_gravity="right"
         android:contentDescription="@string/menu_strings"
         android:focusable="true"
         android:onClick="favs_Click"
         android:nestedScrollingEnabled="true"
+        android:maxHeight="80dp"
+        android:maxWidth="80dp"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/search"
-        android:layout_toStartOf="@+id/search"
-        android:layout_marginRight="66dp"
-        android:layout_marginEnd="66dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="20dp"/>
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/search"
-        android:src="@drawable/szukaj"
+        android:src="@drawable/search"
         android:scaleType="center"
         android:background="#ffffff"
         android:contentDescription="@string/search_txt"
         android:onClick="search_Click"
         android:layout_alignTop="@+id/favs"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignLeft="@+id/todo"
+        android:layout_alignStart="@+id/todo"/>
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/calendar"
-        android:src="@drawable/kalendarz"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/favs"
-        android:layout_alignStart="@+id/favs"
+        android:src="@drawable/calendar"
         android:background="#ffffff"
         android:contentDescription="@string/calendar"
         android:onClick="calendar_Click"
-        android:contextClickable="true" />
+        android:contextClickable="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="130dp"
+        android:layout_marginLeft="20dp"/>
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/todo"
-        android:layout_alignBottom="@+id/calendar"
-        android:layout_alignRight="@+id/search"
-        android:layout_alignEnd="@+id/search"
         android:src="@drawable/todo"
-        android:layout_alignTop="@+id/calendar"
-        android:layout_toRightOf="@+id/favs"
-        android:layout_toEndOf="@+id/favs"
         android:contentDescription="@string/toto_desc"
-        android:onClick="todo_Click" />
+        android:onClick="todo_Click"
+        android:background="#2e6894"
+        android:layout_alignTop="@+id/calendar"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="20dp"/>
 
 </RelativeLayout>

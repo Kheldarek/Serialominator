@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
             android:textStyle="bold"
-            android:textColor="@color/abc_input_method_navigation_guard"/>
+            android:textColor="@color/abc_primary_text_disable_only_material_dark"/>
 
         <TextView
             android:id="@+id/counter"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
             android:textStyle="italic"
-            android:textColor="@color/abc_input_method_navigation_guard"/>
+            android:textColor="@color/abc_primary_text_disable_only_material_dark"/>
     </LinearLayout>
 
 </LinearLayout>

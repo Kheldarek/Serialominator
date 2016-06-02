@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:descendantFocusability="blocksDescendants"
 
 
     >
@@ -27,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="5dp"
                 android:textStyle="bold"
-                android:textColor="@color/abc_input_method_navigation_guard"/>
+                android:textColor="@color/abc_primary_text_disable_only_material_dark"/>
 
             <TextView
                 android:id="@+id/txtYear"
@@ -36,17 +37,19 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="5dp"
                 android:textStyle="italic"
-                android:textColor="@color/abc_input_method_navigation_guard"/>
+                android:textColor="@color/abc_primary_text_disable_only_material_dark"/>
         </LinearLayout>
             </LinearLayout>
-    <Button
+    <ImageButton
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:gravity="end"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:id="@+id/addBtn"
-        android:text="ADD"/>
+        android:text="ADD"
+        android:adjustViewBounds="false"
+        android:src="@drawable/fav_unchecked"/>
 
 
 </RelativeLayout>

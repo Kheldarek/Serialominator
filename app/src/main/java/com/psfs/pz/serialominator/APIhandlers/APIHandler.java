@@ -176,7 +176,7 @@ public class APIHandler
                         tmpEp.setEpisodeID(tmpObj.getString("imdbID"));
                         tmpEp.setEpisodeNumber(tmpObj.getInt("Episode"));
                         tmpEp.setSeason(i+1);
-                        tmpEp.setTitle(tmpObj.getString("Title"));
+                        tmpEp.setTitle(tmpObj.getString(TITLE_KEY));
 
                         Date date = new Date();
                         String release = tmpObj.getString("Released");
@@ -191,6 +191,8 @@ public class APIHandler
                             }
                             tmpEp.setReleased(date.getTime());
                         }
+                        else
+                            continue;
                         tmpEp.setWatched(0);
                         tmpEp.setSeriesID(SeriesID);
 
@@ -279,6 +281,14 @@ public class APIHandler
 
             try
             {
+
+                SeriesDB tmp =new SeriesDB(context);
+                TvSeries tvSeries = tmp.getByNameAndYear(title,year);
+                if(tvSeries != null)
+                {
+                    tmp.close();
+                    return;
+                }
                 Log.i("RESP", response);
                 JSONObject object = (JSONObject) new JSONTokener(response).nextValue();
                 TvSeries toAdd = new TvSeries();
@@ -290,7 +300,7 @@ public class APIHandler
                 toAdd.setRating(object.getString(RATING_KEY));
                 toAdd.setRuntime(object.getString(RUNTIME_KEY));
                 toAdd.setIMDBid(object.getString(IMDBID_KEY));
-                SeriesDB tmp =new SeriesDB(context);
+
                 tmp.addSeries(toAdd);
                 tmp.close();
                 APIHandler.LoadEpisodesToDB(toAdd.getName(),tmp.getByNameAndYear(toAdd.getName(),toAdd.getYear()).getId(),context);

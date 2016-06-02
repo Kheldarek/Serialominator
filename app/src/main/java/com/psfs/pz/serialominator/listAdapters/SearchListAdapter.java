@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.psfs.pz.serialominator.APIhandlers.APIHandler;
 import com.psfs.pz.serialominator.R;
@@ -44,11 +46,12 @@ public class SearchListAdapter extends ArrayAdapter<SearchRowBean>
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
 
+
             holder = new RowBeanHolder();
             holder.imgIcon = (ImageView)row.findViewById(R.id.imgIcon);
             holder.txtTitle = (TextView)row.findViewById(R.id.txtTitle);
             holder.txtYear = (TextView)row.findViewById(R.id.txtYear);
-            holder.btn = (Button) row.findViewById(R.id.addBtn);
+            holder.btn = (ImageButton) row.findViewById(R.id.addBtn);
             holder.btn.setOnClickListener(BtnClickListener);
             row.setTag(holder);
         }
@@ -59,6 +62,12 @@ public class SearchListAdapter extends ArrayAdapter<SearchRowBean>
 
         SearchRowBean object = data[position];
         holder.txtTitle.setText(object.Title);
+        SeriesDB db = new SeriesDB(context);
+        TvSeries tvSeries = db.getByNameAndYear(object.Title,object.Year);
+        if(tvSeries != null)
+        {
+            holder.btn.setImageResource(R.drawable.fav_checked);
+        }
         Picasso .with(this.context)
                 .load(object.imgUrl)
                 .into((holder.imgIcon));
@@ -72,7 +81,7 @@ public class SearchListAdapter extends ArrayAdapter<SearchRowBean>
         ImageView imgIcon;
         TextView txtTitle;
         TextView txtYear;
-        Button btn;
+        ImageButton btn;
     }
     private View.OnClickListener BtnClickListener = new View.OnClickListener() {
         @Override
@@ -83,7 +92,23 @@ public class SearchListAdapter extends ArrayAdapter<SearchRowBean>
             ListView tmp = (ListView)parent.findViewById(R.id.searchLst);
             SearchRowBean tmpRow = (SearchRowBean)tmp.getItemAtPosition(position);
             Log.d("sth", tmpRow.Title + " ");
-            APIHandler.LoadSeriesToDB(tmpRow.Title,tmpRow.Year,parent.getContext());
+            SeriesDB db = new SeriesDB(context);
+            TvSeries tvSeries = db.getByNameAndYear(tmpRow.Title,tmpRow.Year);
+            if(tvSeries == null)
+            {
+                ((ImageButton)v).setImageResource(R.drawable.fav_checked);
+                Toast.makeText(context, "Series added", Toast.LENGTH_SHORT).show();
+                APIHandler.LoadSeriesToDB(tmpRow.Title,tmpRow.Year,parent.getContext());
+                db.close();
+
+            }
+            else
+            {
+                Toast.makeText(context, "Series deleted", Toast.LENGTH_SHORT).show();
+                ((ImageButton)v).setImageResource(R.drawable.fav_unchecked);
+                db.delSeries(tvSeries);
+                db.close();
+            }
 
 
 

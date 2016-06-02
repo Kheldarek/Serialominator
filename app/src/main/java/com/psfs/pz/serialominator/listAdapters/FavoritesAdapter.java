@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -54,7 +55,7 @@ public class FavoritesAdapter extends ArrayAdapter<TvSeries>
             holder.imgIcon = (ImageView)row.findViewById(R.id.imgIcon);
             holder.txtTitle = (TextView)row.findViewById(R.id.txtTitle);
             holder.txtYear = (TextView)row.findViewById(R.id.txtYear);
-            holder.delBtn = (Button) row.findViewById(R.id.delBtn);
+            holder.delBtn = (ImageButton) row.findViewById(R.id.delBtn);
             holder.delBtn.setOnClickListener(BtnClickListener);
             row.setTag(holder);
 
@@ -79,7 +80,7 @@ public class FavoritesAdapter extends ArrayAdapter<TvSeries>
         ImageView imgIcon;
         TextView txtTitle;
         TextView txtYear;
-        Button delBtn;
+        ImageButton delBtn;
     }
 
 
