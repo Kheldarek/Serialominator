@@ -145,6 +145,7 @@ public class SeriesDB extends SQLiteOpenHelper
         SQLiteDatabase db = getWritableDatabase();
         String[] arguments = {tvSeries.getName(), tvSeries.getYear()};
         db.delete("TvSeries", "name=? and year =?", arguments);
+        deleteAllEpisodes(tvSeries.getId());
 
     }
 
@@ -209,17 +210,18 @@ public class SeriesDB extends SQLiteOpenHelper
         String[] columns = {"id", "name", "year", "img"};
         String args[] = {nme, yr};
         Cursor cursor = db.query("TvSeries", columns, " name=? and year=?", args, null, null, null, null);
-        if (cursor.getCount() != 0)
-        {
+        if(cursor!=null) {
+            if (cursor.getCount() != 0) {
 
-            cursor.moveToFirst();
-            series.setId(cursor.getInt(0));
-            series.setName(cursor.getString(1));
-            series.setYear(cursor.getString(2));
-            series.setImg(cursor.getString(3));
-            return series;
+                cursor.moveToFirst();
+                series.setId(cursor.getInt(0));
+                series.setName(cursor.getString(1));
+                series.setYear(cursor.getString(2));
+                series.setImg(cursor.getString(3));
+                return series;
+            } else return null;
         }
-        else return null;
+        return series;
     }
 
     public List<TvSeries> getByYear(String year)
